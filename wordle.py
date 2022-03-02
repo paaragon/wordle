@@ -1,3 +1,5 @@
+import requests
+
 def RGB(red=None, green=None, blue=None,bg=False):
     if(bg==False and red!=None and green!=None and blue!=None):
         return f'\u001b[38;2;{red};{green};{blue}m'
@@ -13,8 +15,9 @@ grey = RGB(100,100,100)
 
 def main():
     rounds = 5
-    word = "hola"
+    word = get_word()
     hint = [ ["_", 0] for x in range(len(word)) ]
+    print("\nLet's play\n")
     print_hint(hint)
 
     i = 0
@@ -72,6 +75,13 @@ def print_hint(hint, round=None, max_rounds=None):
 
     print("\n" + roundStr + " " + " ".join(printable) + "\n")
 
+def get_word():
+    print("\nRequesting for a word")
+    r =requests.get("https://random-word-api.herokuapp.com/word?number=1")
+    words = r.json()
+    print("New word found!")
+
+    return words[0]
 
 if __name__ == "__main__":
     main()
